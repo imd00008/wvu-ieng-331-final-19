@@ -83,3 +83,11 @@ We added specific exception handling so errors are easier to understand.
    `df.write_json(output_dir / filename.replace('.csv', '.json'))`.
 
    Since the data is already in a clean DataFrame, this change would be simple and wouldn’t require changes to other parts of the system.
+
+## Report Module
+
+The `report.py` module is called at the end of `pipeline.py` after all query outputs
+are generated. It receives the `seller_df` and `delivery_df` DataFrames directly from
+the pipeline and writes a formatted Excel workbook to `output/report.xlsx` using
+XlsxWriter. The workbook is regenerated on every pipeline run — it is not a manual
+export. Excel was chosen because recipients can open it with no additional software.

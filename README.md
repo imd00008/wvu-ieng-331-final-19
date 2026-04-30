@@ -54,3 +54,20 @@ Our analytical focus remains on the **Seller Performance Scorecard** within the 
 * **Local Database Dependency**: The script expects `olist.duckdb` to be locally present in the `data/` folder and does not currently support remote cloud database connections.
 * **Input Sensitivity**: The `--start-date` parameter requires a very specific `YYYY-MM-DD` format. Providing an incorrectly formatted string will cause a `ValueError`.
 * **Schema Rigidity**: The validation layer is hardcoded to the Olist schema. Any structural changes or renaming of tables in the source database will trigger validation warnings.
+
+Add to readme
+
+## Final Deliverable
+
+**Format:** Excel Workbook (`output/report.xlsx`)
+
+**Why Excel:** Recipients can open it with no installation required.
+The workbook is self-contained with formatted tables and embedded charts.
+
+**Sheets:**
+- **Executive Summary** — key metrics and narrative overview of the Olist business
+- **Seller Scorecard** — full dataset of all seller performance metrics
+- **Revenue Chart** — bar chart of top 20 sellers by revenue
+- **Delivery Trends** — line chart comparing delivery reliability by state
+
+**To open:** Run the pipeline, then open `output/report.xlsx` in Excel or Google Sheets.

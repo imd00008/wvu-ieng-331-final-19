@@ -55,8 +55,6 @@ Our analytical focus remains on the **Seller Performance Scorecard** within the 
 * **Input Sensitivity**: The `--start-date` parameter requires a very specific `YYYY-MM-DD` format. Providing an incorrectly formatted string will cause a `ValueError`.
 * **Schema Rigidity**: The validation layer is hardcoded to the Olist schema. Any structural changes or renaming of tables in the source database will trigger validation warnings.
 
-Add to readme
-
 ## Final Deliverable
 
 **Format:** Excel Workbook (`output/report.xlsx`)

@@ -1,4 +1,4 @@
-# Milestone 2: Python Pipeline
+# Final Project Milestone
 
 **Team 19**: Ian Donnen, Audrey Doyle, Rylee Lindermuth
 

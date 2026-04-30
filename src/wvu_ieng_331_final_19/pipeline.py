@@ -7,7 +7,8 @@ import duckdb
 import polars as pl
 from loguru import logger
 
-from .queries import get_seller_performance_scorecard
+from .queries import get_delivery_time_by_geography, get_seller_performance_scorecard
+from .report import generate_report
 from .validation import run_pre_flight_checks, validate_dataframe
 
 
@@ -95,9 +96,17 @@ def main() -> None:
                     height=400,
                 )
             )
+
             html_path = output_dir / "chart.html"
             chart.save(html_path)
             logger.success(f"📊 Saved {html_path}")
+
+            # D. REPORT.XLSX Output
+            logger.info("📋 Generating Excel report...")
+            delivery_df = get_delivery_time_by_geography(
+                db_path, start_date=args.start_date
+            )
+            generate_report(df, delivery_df, output_dir, seller_state=args.seller_state)
 
     # Specific Exception Handling defined by the rubric
     except FileNotFoundError as e:

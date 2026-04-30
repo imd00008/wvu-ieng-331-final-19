@@ -16,6 +16,7 @@ def generate_report(
 
     Args:
         seller_df (pl.DataFrame): Seller performance scorecard DataFrame.
+        delivery_df (pl.DataFrame): Delivery time by geography DataFrame.
         output_dir (Path): Directory to write the report file.
         seller_state (str, optional): State filter label for report title.
 
@@ -107,6 +108,49 @@ def generate_report(
         bar_chart.set_y_axis({"name": "Seller ID"})
         bar_chart.set_size({"width": 720, "height": 480})
         ws_chart.insert_chart("D4", bar_chart)
+
+        # ── Sheet 4: Delivery Trends ──────────────────────────
+        ws_trend = workbook.add_worksheet("Delivery Trends")
+        ws_trend.write("A1", "Delivery Performance by State", title_fmt)
+        ws_trend.write(
+            "A2",
+            "This chart shows how far off actual deliveries are from "
+            "estimates by state. Negative values mean deliveries arrived "
+            "earlier than promised. States closer to 0 are least reliable "
+            "relative to their estimates.",
+            cell_fmt,
+        )
+
+        ws_trend.write("A4", "Rank", header_fmt)
+        ws_trend.write("B4", "State", header_fmt)
+        ws_trend.write("C4", "Avg Days Off Estimate", header_fmt)
+        ws_trend.write("D4", "Total Orders", header_fmt)
+
+        for i, row in enumerate(delivery_df.iter_rows(named=True), start=4):
+            ws_trend.write(i, 0, row["national_unreliability_rank"], cell_fmt)
+            ws_trend.write(i, 1, row["customer_state"], cell_fmt)
+            ws_trend.write(i, 2, row["avg_days_off_estimate"], number_fmt)
+            ws_trend.write(i, 3, row["total_orders_analyzed"], cell_fmt)
+
+        line_chart = workbook.add_chart({"type": "line"})
+        line_chart.add_series(
+            {
+                "name": "Avg Days Off Estimate",
+                "categories": ["Delivery Trends", 4, 1, 4 + len(delivery_df) - 1, 1],
+                "values": ["Delivery Trends", 4, 2, 4 + len(delivery_df) - 1, 2],
+            }
+        )
+        line_chart.set_title(
+            {"name": "Delivery Reliability by State (Days Off Estimate)"}
+        )
+        line_chart.set_x_axis({"name": "State"})
+        line_chart.set_y_axis({"name": "Avg Days Off Estimate"})
+        line_chart.set_size({"width": 720, "height": 480})
+        ws_trend.insert_chart("F4", line_chart)
+        ws_trend.set_column("A:A", 10)
+        ws_trend.set_column("B:B", 10)
+        ws_trend.set_column("C:C", 22)
+        ws_trend.set_column("D:D", 15)
 
         workbook.close()
         logger.success(f"📋 Report saved to {report_path}")

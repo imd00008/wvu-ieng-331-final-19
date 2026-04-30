@@ -1,0 +1,20 @@
+[project]
+name = "wvu-ieng-331-final-19"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+authors = [{ name = "Ian Donnen", email = "imd00008@mix.wvu.edu" }]
+dependencies = [
+  "altair>=6.0.0",
+  "duckdb>=1.5.2",
+  "loguru>=0.7.3",
+  "polars>=1.39.3",
+]
+
+[project.scripts]
+wvu-ieng-331-final-19 = "wvu_ieng_331_final_19.pipeline:main"
+
+[build-system]
+requires = ["uv_build>=0.10.8,<0.11.0"]
+build-backend = "uv_build"
